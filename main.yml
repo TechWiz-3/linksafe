@@ -1,0 +1,18 @@
+name: 'Link Safe'
+description: 'Check all links and ensure they are not broken'
+inputs:
+  dirs:
+    description: 'File path for each directory to scan'
+  whitelist_links:  # id of input
+    description: 'Links to ignore even if they"re broken'
+    required: true
+  whitelist_files:
+    description: 'Files that will not be scanned'
+#outputs:
+#  link-status: # id of output
+#    description: 'Whether or not the check passed'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.who-to-greet }}
