@@ -3,16 +3,25 @@ description: 'Check all links and ensure they are not broken'
 inputs:
   dirs:
     description: 'File path for each directory to scan'
+    required: false
+    default: '.'
   whitelist_links:  # id of input
     description: 'Links to ignore even if they"re broken'
-    required: true
+    required: false
+    default: 'None'
   whitelist_files:
     description: 'Files that will not be scanned'
+    required: false
+    
+  verbose:
+    description: 'Whether output should be verbose or not'
+    required: false
+    default: false
 #outputs:
 #  link-status: # id of output
 #    description: 'Whether or not the check passed'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.who-to-greet }}
+  #args:
+  #  - ${{ inputs.who-to-greet }}

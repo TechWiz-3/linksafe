@@ -3,9 +3,8 @@ from requests.adapters import HTTPAdapter
 
 
 def scan_links(links, verbose=False):
-    bad_links = False
-    for link in links:
-        print(link)
+    bad_links = None
+    for file, line, link in links:
         try:
             s = requests.Session()
             s.mount(link, HTTPAdapter(max_retries=5))
@@ -18,10 +17,12 @@ def scan_links(links, verbose=False):
         else:
             if status >= 400:
                 print("Error with status code ", req.status_code)
-                bad_links = True
+                bad_links.append(file, line, link) 
             elif status < 400:
                 print(f"Link valid with status code {req.status_code}")
-    if not bad_links:
-        print("All links correct - test passed")
-    else:
+    if bad_links:
         print("Test failed")
+        for file, line, link in bad_links:
+            print(f"In {file} on line {line}, link: {link}") 
+    else:
+        print("All links correct - test passed")
