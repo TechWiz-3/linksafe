@@ -1,5 +1,3 @@
-# main(match.group())
-# main(match.group())
 import re
 from link import scan_links
 from os import getenv
@@ -8,11 +6,11 @@ from sys import argv
 
 args = argv
 if "--local-test" in args:
-    directories = ["./"]
+    directories = ["./", "./pythonfetch", "./bfetch/", "./kids.cache/"]
     verbose = True
-    whitelist_links = ["https://img.shields.io/badge/style-black-black"]
+    whitelist_links = ["https://img.shields.io/badge/style-black-black", "http://github.com/0k/%%name%%"]
+    whitelist_files=["./LICENSE.md"]
 else:
-
     try:
         verbose = getenv("INPUT_VERBOSE")
         whitelist_links = getenv("INPUT_WHITELIST_LINKS").split(",")
@@ -24,29 +22,32 @@ else:
         exit()
 
 
-# pattern = re.compile(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)")
 pattern = re.compile(r"(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])")
 links = []
-default_link_exclusion = []
+default_link_exclusion = ["https://example.com"]
 
 # loop through the directories, e.g. [".", "./src", "./doc"]
 for directory in directories:
     for file_object in os.scandir(directory):
         file = file_object.path
         if file_object.is_file() and not file.startswith("./."):
+            if file in whitelist_files:
+                print(f"{file} skipped due to whitelist")
+                # skip the file
+                continue
             if verbose:
                 print(f"Scanning {file} file")
             # scan file
             for i, line in enumerate(open(file)):
                 for match in re.finditer(pattern, line):
                     try:
+                        re_match = match.group()
                         if verbose:
-                            print(match.group())
+                            print(f"Link found on line {i+1}: {re_match}")
                     except Exception as e:
                         print(e)
                     else:
                         ignore = None
-                        re_match = match.group()
                         for ignore_link in default_link_exclusion:
                             ignore = False
                             if ignore_link in re_match:
@@ -62,7 +63,7 @@ for directory in directories:
                         else:
                             links.append((file, i+1, re_match))
                             if verbose == True:
-                                print('Found on line %s: %s' % (i+1, match.group()))
+                                print('Link added for scanning %s' % (match.group()))
 
 print("\n\nLink check starting:\n")
 try:
