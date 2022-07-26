@@ -9,8 +9,3 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run the action
         uses: TechWiz-3/linksafe@main
-        with:
-          dirs: "./test/README.md"
-          whitelist_links: 'None'
-          whitelist_files: 'None'
-          verbose: true
