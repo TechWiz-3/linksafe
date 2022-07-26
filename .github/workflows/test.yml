@@ -1,0 +1,14 @@
+name: Test workflow
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run the action
+        uses: paramt/url-checker@master
+        with:
+          dirs: "./test/README.md"
+          verbose: true
