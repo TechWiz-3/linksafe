@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run linksafe
-      uses TechWiz-3/linksafe@main
+      uses TechWiz-3/linksafe@main:
       with:
         dirs: "./src,./src/subdir,./doc/website,./doc/more"
         verbose: true
