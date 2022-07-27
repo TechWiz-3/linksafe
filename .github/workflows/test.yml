@@ -10,5 +10,5 @@ jobs:
       - name: Run the action
         uses: TechWiz-3/linksafe@main
         with:
-          dirs: "./tests,./src/test.txt"
+          dirs: "./test,./src/test.txt"
           verbose: true
