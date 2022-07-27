@@ -17,11 +17,11 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run linksafe
       uses TechWiz-3/linksafe@main
-      with:
-        dirs: "./src,./src/subdir,./doc/website,./doc/more"
-        verbose: true
-        whitelist_links: "https://xyz.xyz"
-        whitelist_files: "./doc/HACKING.md"
+    with:
+      dirs: "./src,./src/subdir,./doc/website,./doc/more"
+      verbose: true
+      whitelist_links: "https://xyz.xyz"
+      whitelist_files: "./doc/HACKING.md"
 ```
 
 ## Todo
