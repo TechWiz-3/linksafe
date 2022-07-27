@@ -11,17 +11,17 @@ on:
     branches: [ "main" ]
 
 jobs:
-    linksafe:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Run linksafe
-      uses TechWiz-3/linksafe@main:
-      with:
-        dirs: "./src,./src/subdir,./doc/website,./doc/more"
-        verbose: true
-        whitelist_links: "https://xyz.xyz"
-        whitelist_files: "./doc/HACKING.md"
+      - uses: actions/checkout@v2
+      - name: Run linksafe
+        uses TechWiz-3/linksafe@main:
+        with:
+          dirs: "./src,./src/subdir,./doc/website,./doc/more"
+          verbose: true
+          whitelist_links: "https://xyz.xyz"
+          whitelist_files: "./doc/HACKING.md"
 ```
 
 ## Todo
