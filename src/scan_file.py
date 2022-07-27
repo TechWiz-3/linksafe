@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import re
 from link import scan_links
 from os import getenv
