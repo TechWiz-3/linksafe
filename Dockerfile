@@ -7,5 +7,7 @@ ADD ./src/ /src/
 RUN chmod +x /src/scan_file.py
 RUN chmod +x /src/link.py
 
+RUN pip install requests
+
 # Run the python file
 ENTRYPOINT ["/src/scan_file.py"]
