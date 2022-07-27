@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.9
 
 # Add our script to the container's root directory
 ADD ./src/ /src/
