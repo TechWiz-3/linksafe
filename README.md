@@ -21,9 +21,7 @@ jobs:
         dirs: "./src,./src/subdir,./doc/website,./doc/more"
         verbose: true
         whitelist_links: "https://xyz.xyz"
-        whitelst_files: "./doc/HACKING.md"
-
-    
+        whitelist_files: "./doc/HACKING.md"
 ```
 
 ## Todo
