@@ -18,7 +18,7 @@ else:
         whitelist_links = getenv("INPUT_WHITELIST_LINKS").split(",")
         whitelist_files = getenv("INPUT_WHITELIST_FILES").split(",")
         directories = getenv("INPUT_DIRS").split(",")
-        print("verbose")
+        print(verbose)
     except:
         print("Error loading env variables, please check your .github/workflows workflow")
         from sys import exit
