@@ -7,7 +7,8 @@ from sys import argv
 
 args = argv
 if "--local-test" in args:
-    directories = ["./", "./pythonfetch", "./bfetch/", "./kids.cache/"]
+   # directories = ["./", "./pythonfetch", "./bfetch/", "./kids.cache/", "awesome-python"]
+    directories = ["./awesome-python"]
     verbose = True
     whitelist_links = ["https://img.shields.io/badge/style-black-black", "http://github.com/0k/%%name%%"]
     whitelist_files=["./LICENSE.md"]
@@ -17,6 +18,7 @@ else:
         whitelist_links = getenv("INPUT_WHITELIST_LINKS").split(",")
         whitelist_files = getenv("INPUT_WHITELIST_FILES").split(",")
         directories = getenv("INPUT_DIRS").split(",")
+        print("verbose")
     except:
         print("Error loading env variables, please check your .github/workflows workflow")
         from sys import exit
