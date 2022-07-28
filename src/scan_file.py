@@ -18,11 +18,16 @@ else:
         whitelist_links = getenv("INPUT_WHITELIST_LINKS").split(",")
         whitelist_files = getenv("INPUT_WHITELIST_FILES").split(",")
         directories = getenv("INPUT_DIRS").split(",")
-        print(verbose)
+        if verbose = "false":
+            verbose == False
+            print("Verbose is disabled")
+        elif verbose == "true":
+            verbose = True
+            print("Verbose is enabled")
     except:
         print("Error loading env variables, please check your .github/workflows workflow")
         from sys import exit
-        exit()
+        exit(1)
 
 
 pattern = re.compile(r"(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])")
