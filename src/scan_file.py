@@ -18,8 +18,8 @@ else:
         whitelist_links = getenv("INPUT_WHITELIST_LINKS").split(",")
         whitelist_files = getenv("INPUT_WHITELIST_FILES").split(",")
         directories = getenv("INPUT_DIRS").split(",")
-        if verbose = "false":
-            verbose == False
+        if verbose == "false":
+            verbose = False
             print("Verbose is disabled")
         elif verbose == "true":
             verbose = True
