@@ -34,4 +34,4 @@ Files and or links can be whitelist i.e. ignore
 
 ## Todo
 - [ ] Recognition of remove yt videos
-- [ ] Emoji HTTP code
+- [ ] Emoji HTTP code (optional)
