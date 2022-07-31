@@ -1,4 +1,4 @@
-name: 'Linksafe'
+name: 'linksafe-action'
 description: 'Check all links and ensure they are not broken'
 inputs:
   dirs:
