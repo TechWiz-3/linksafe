@@ -24,7 +24,7 @@ def scan_links(links, verbose=False):
             print(f"---> Unexpected exception occurred while making request: {err}")
         else:
             if status == 403:
-                print(f"--> Link validity unkwown with 402 Forbidden return code {req.status_code}")
+                print(f"--> Link validity unkwown with 403 Forbidden return code {req.status_code}")
             elif status == 406:
                 print(f"--> Link validity unkwown with 406 Not Acceptable return code {req.status_code}")
                 warning_links.append((file, line, link))
