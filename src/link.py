@@ -52,6 +52,7 @@ def scan_links(links, verbose=False):
             print("\n==== Links with non-definitive status codes ====")
             for file, line, link in warning_links:
                 print(f"In {file} on line {line}, link: {link}")
+            print("Links that you have verified are OK can be whitelisted in the workflow file")
         print("\n==== Failed links ====")
         for file, line, link in bad_links:
             print(f"In {file} on line {line}, link: {link}")
@@ -60,6 +61,7 @@ def scan_links(links, verbose=False):
         print("\n==== Links with non-definitive status codes ====")
         for file, line, link in warning_links:
             print(f"In {file} on line {line}, link: {link}")
+        print("Links that you have verified are OK can be whitelisted in the workflow file")
         print("Otherwise, all links correct - test passed")
     else:
         print("All links correct - test passed")
