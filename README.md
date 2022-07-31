@@ -17,8 +17,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run linksafe
         uses: TechWiz-3/linksafe@main
-        with:
-          dirs: "./src,./src/subdir,./doc/website,./doc/more"
+        with: # comma seperated lists
+          dirs: ".,./src,./src/subdir,./doc/website,./doc/more"
           verbose: true
           whitelist_links: "https://xyz.xyz"
           whitelist_files: "./doc/HACKING.md"
@@ -28,9 +28,11 @@ jobs:
 
 `https://example.com` and `http://localhost` are automatically ignored  
 
-Each directory to be scanned must be specified directly, otherwise only the root dir will be scanned and subdirs will be ignored.  
+Each directory to be scanned must be specified directly, otherwise only the root dir will be scanned and subdirs will be ignored. At the same time, if you want the root dir AND subdirs to be scanned, remember to include a `.` as part of the list.  
 
-Files and or links can be whitelist i.e. ignore
+Files and or links can be whitelisted i.e. ignored.  
+
+Please note, with repos with a lot of links, a scan can take a LONG time, even up to 40+ minutes.
 
 ## Todo
 - [ ] Recognition of remove yt videos
