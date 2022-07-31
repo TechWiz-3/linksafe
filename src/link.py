@@ -17,6 +17,7 @@ def scan_links(links, verbose=False):
         except requests.exceptions.RequestException as err:
             if "Max retries exceeded with url" in str(err):
                 print(f"Link connection failed, max retries reached: {link}")
+                bad_links.append((file, line, link))
             else:
                 print(f"---> Connection error: {err}")
                 bad_links.append((file, line, link))
@@ -25,6 +26,7 @@ def scan_links(links, verbose=False):
         else:
             if status == 403:
                 print(f"--> Link validity unkwown with 403 Forbidden return code {req.status_code}")
+                warning_links.append((file, line, link))
             elif status == 406:
                 print(f"--> Link validity unkwown with 406 Not Acceptable return code {req.status_code}")
                 warning_links.append((file, line, link))
