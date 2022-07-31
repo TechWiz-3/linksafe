@@ -25,24 +25,24 @@ def scan_links(links, verbose=False):
             print(f"---> Unexpected exception occurred while making request: {err}")
         else:
             if status == 403:
-                print("403 triggered - this is a message for testing purposes and will be removed soon")
+                print(f"--> Link validity unkwown with 403 Forbidden return code")
                 warning_links.append((file, line, link))
             elif status == 406:
-                print(f"--> Link validity unkwown with 406 Not Acceptable return code {req.status_code}")
+                print(f"--> Link validity unkwown with 406 Not Acceptable return code")
                 warning_links.append((file, line, link))
             elif 561 >= status >= 400:
-                print("----> Error with status code", req.status_code)
+                print(f"----> Error with status code {status}")
                 bad_links.append((file, line, link))
             elif status >= 300:  # between 300-400 HTTP REDIRECT
-                print("--> Link redirecting with status code", req.status_code)
+                print(f"--> Link redirecting with status code {status}")
                 warning_links.append((file, line, link))
             elif status < 400 or status in up_codes:
-                print(f"Link valid with status code {req.status_code}")
+                print(f"Link valid with status code {status}")
             elif status == 999:
-                print(f"--> Linkedin specific return code 999")
+                print("--> Linkedin specific return code 999")
                 warning_links.append((file, line, link))
             else:
-                print(f"--> Unknown return code {req.status_code}")
+                print(f"--> Unknown return code {status}")
                 warning_links.append((file, line, link))
     if bad_links:
         print("Test failed")
