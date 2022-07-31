@@ -55,20 +55,19 @@ for directory in directories:
                     except Exception as e:
                         print(e)
                     else:
-                        ignore = None
+                        ignore = False
                         for ignore_link in default_link_exclusion:
-                            ignore = False
                             if ignore_link in re_match:
-                               ignore = True
                                print(f"Link ignored (automatically): {re_match}")
+                               ignore = True
+                               break
+                        if ignore:  # link should be automatically ignored
+                            continue  # skip to the next link
                         for ignore_link in whitelist_links:
-                            ignore = False
                             if ignore_link in re_match:
-                                ignore = True
                                 print(f"Link ignored (whitelist): {re_match}")
-                        if ignore:
-                            pass
-                        else:
+                                break
+                        else:  # if link is not whitelisted or ignored
                             links.append((file, i+1, re_match))
                             if verbose == True:
                                 print('Link added for scanning %s' % (match.group()))
