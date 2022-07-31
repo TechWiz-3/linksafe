@@ -1,4 +1,6 @@
 name: 'linksafe-action'
+icon: check
+color: purple
 description: 'Check all links and ensure they are not broken'
 inputs:
   dirs:
