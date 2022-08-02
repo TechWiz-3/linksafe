@@ -9,10 +9,13 @@ def scan_links(links, verbose=False):
         try:
             s = requests.Session()
             s.mount(link, HTTPAdapter(max_retries=5))
-            req = s.get(link)
+            req = s.get(link, timeout=30.00)  # 30s timeout
             status = req.status_code
         except requests.exceptions.SSLError:
             print(f"---> SSL certificate error for link: {link}")
+            bad_links.append((file, line, link))
+        except requests.exceptions.Timeout:
+            print(f"----> Connection attempt timed out for link: {link}")
             bad_links.append((file, line, link))
         except requests.exceptions.RequestException as err:
             if "Max retries exceeded with url" in str(err):
