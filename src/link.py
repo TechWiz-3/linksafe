@@ -36,7 +36,7 @@ def scan_links(links, verbose=False):
             elif status >= 300:  # between 300-400 HTTP REDIRECT
                 print(f"--> Link redirecting with status code {status}")
                 warning_links.append((file, line, link))
-            elif status < 400 or status in up_codes:
+            elif status < 400:
                 print(f"Link valid with status code {status}")
             elif status == 999:
                 print("--> Linkedin specific return code 999")
