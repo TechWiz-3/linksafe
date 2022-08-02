@@ -4,11 +4,7 @@ Scan your repo for broken links. Whitelist links or files you wish to ignore.
 
 ## Example usage
 ```yaml
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push]
 
 jobs:
   build:
