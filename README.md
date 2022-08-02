@@ -38,3 +38,7 @@ Please note, with repos with a lot of links, a scan can take a LONG time, even u
 - [ ] In depth error handling for user inputs (if they go wrong)
 - [ ] Recognition of remove yt videos
 - [ ] Emoji HTTP code (optional)
+
+---
+### 🎉 Commit labels
+If you're interested in the commit labels used in this repo, check out my [git emoji](https://github.com/TechWiz-3/git-commit-emojis) project
