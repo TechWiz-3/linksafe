@@ -1,9 +1,10 @@
 # Linksafe
 
-Scan your repo for broken links. Whitelist links or files you wish to ignore.
+Scan your repo for broken links. Whitelist links or files you wish to ignore. Works in private repos.
 
 ## Example usage
 ```yaml
+name: Link-check
 on: [push]
 
 jobs:
@@ -15,10 +16,11 @@ jobs:
         uses: TechWiz-3/linksafe@main
         with: # comma seperated lists
           # use relative paths, if no dirs specified root dir is scanned
-          dirs: ".,./src,./src/subdir,./doc/website,./doc/more"
+          dirs: ".,./src,./src/data,./tests,./tests/pylint"
           # set to false by default
           verbose: true
           whitelist_links: "https://xyz.xyz"
+          # use relative paths
           whitelist_files: "./doc/HACKING.md"
 ```
 
@@ -33,5 +35,6 @@ Files and or links can be whitelisted i.e. ignored.
 Please note, with repos with a lot of links, a scan can take a LONG time, even up to 40+ minutes.
 
 ## Todo
+- [ ] In depth error handling for user inputs (if they go wrong)
 - [ ] Recognition of remove yt videos
 - [ ] Emoji HTTP code (optional)
