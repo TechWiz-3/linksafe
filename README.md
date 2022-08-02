@@ -18,7 +18,9 @@ jobs:
       - name: Run linksafe
         uses: TechWiz-3/linksafe@main
         with: # comma seperated lists
+          # use relative paths, if no dirs specified root dir is scanned
           dirs: ".,./src,./src/subdir,./doc/website,./doc/more"
+          # set to false by default
           verbose: true
           whitelist_links: "https://xyz.xyz"
           whitelist_files: "./doc/HACKING.md"
