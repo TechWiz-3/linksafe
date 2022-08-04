@@ -20,7 +20,7 @@ def scan_link(url):
         print(f"Read {response.status_code} from {url}")
 
 def all_sites(sites):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
         executor.map(scan_link, sites)
 
 def scan_links(links, verbose=False):
