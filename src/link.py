@@ -19,7 +19,7 @@ def scan_link(url):
     file,line,link = url
     session = get_session()
     try:
-        with session.get(url) as response:
+        with session.get(link) as response:
             print(f"Read {response.status_code} from {url}")
     except requests.exceptions.SSLError:
         print(f"---> SSL certificate error for link: {link}")
