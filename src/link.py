@@ -15,7 +15,7 @@ def scan_link(url, session):
         print(f"Read {response.status_code} from {url}")
 
 def all_sites(sites):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5):
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(download_site, sites)
 
 def scan_links(links, verbose=False):
