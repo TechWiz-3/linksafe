@@ -13,7 +13,9 @@ def get_session():
     return thread_local.session
 
 def scan_link(url, session):
+    print("scan link running")
     session = get_session()
+    print(session, "session variable")
     with session.get(url) as response:
         print(f"Read {response.status_code} from {url}")
 
