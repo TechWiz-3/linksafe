@@ -16,7 +16,7 @@ def scan_link(url, session):
 
 def all_sites(sites):
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-        executor.map(download_site, sites)
+        executor.map(scan_link, sites)
 
 def scan_links(links, verbose=False):
     all_sites(links)
