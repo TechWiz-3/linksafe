@@ -38,6 +38,7 @@ Please note, with repos with a lot of links, a scan can take a LONG time, even u
 - [ ] In depth error handling for user inputs (if they go wrong)
 - [ ] Recognition of remove yt videos
 - [ ] Emoji HTTP code (optional)
+- [ ] 429 error code
 
 ---
 ### 🎉 Commit labels
