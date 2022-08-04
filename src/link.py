@@ -20,4 +20,5 @@ def all_sites(sites):
         executor.map(scan_link, sites)
 
 def scan_links(links, verbose=False):
+    print(links)
     all_sites(links)
