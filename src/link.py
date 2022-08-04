@@ -27,6 +27,5 @@ def scan_links(links, verbose=False):
     import time
     start_time = time.time()
     all_sites(links)
-    download_all_sites(sites)
     duration = time.time() - start_time
     print(f"{duration} seconds")
