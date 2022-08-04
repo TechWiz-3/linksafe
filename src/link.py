@@ -7,6 +7,7 @@ import threading
 def get_session():
     if not hasattr(thread_local, "session"):
         thread_local.session = resuests.Session()
+    print(thread_local.session)
     return thread_local.session
 
 def scan_link(url, session):
