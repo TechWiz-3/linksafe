@@ -56,7 +56,7 @@ def scan_link(url):
             warning_links.append((file, line, link))
 
 def all_sites(sites):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(scan_link, sites)
 
 def scan_links(links, verbose=False):
