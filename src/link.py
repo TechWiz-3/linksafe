@@ -19,6 +19,7 @@ def get_session():
 
 def scan_link(url):
     file,line,link = url
+    print("Watching for link", link)
     session = get_session()
     if "github.com" in link:
         headers = {'Authorization': 'token ' + TOKEN}
