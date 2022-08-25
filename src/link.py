@@ -19,15 +19,12 @@ def get_session():
 
 def scan_link(url):
     file,line,link = url
-    print("Watching for link", link)
     session = get_session()
     if "github.com" in link:
         headers = {'Authorization': 'token ' + TOKEN}
         link="https://api.github.com/repos/TechWiz-3/TechWiz-3"
-        print("Github link:")
         with session.get(link, headers=headers) as repsonse:
             print(response.status_code)
-            print(response)
     else:
         try:
             with session.get(link) as response:
