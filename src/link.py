@@ -3,11 +3,13 @@ from requests.adapters import HTTPAdapter
 from sys import exit
 import concurrent.futures
 import threading
+from os import getenv
+
+TOKEN = getenv("TOKEN")
 
 bad_links = []
 warning_links = []
 thread_local = threading.local()
-
 
 def get_session():
     if not hasattr(thread_local, "session"):
@@ -19,10 +21,10 @@ def scan_link(url):
     file,line,link = url
     session = get_session()
     if "github.com" in link:
-        token = "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"
-        headers = {'Authorization': 'token ' + token}
+        headers = {'Authorization': 'token ' + TOKEN}
         link="https://api.github.com/repos/TechWiz-3/TechWiz-3"
-        with session.get(link, headers=headers, verify=True) as repsonse:
+        print("Github link:")
+        with session.get(link, headers=headers) as repsonse:
             print(response.status_code)
             print(response)
     else:
