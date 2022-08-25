@@ -32,7 +32,7 @@ else:
 
 pattern = re.compile(r"(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])")
 links = []
-default_link_exclusion = ["https://example.com", "http://localhost"]
+default_link_exclusion = ["https://example.com", "http://example.com/", "http://localhost"]
 
 # loop through the directories, e.g. [".", "./src", "./doc"]
 for directory in directories:

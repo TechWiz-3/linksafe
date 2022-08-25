@@ -18,45 +18,53 @@ def get_session():
 def scan_link(url):
     file,line,link = url
     session = get_session()
-    try:
-        with session.get(link) as response:
-            print(f"Status code {response.status_code} for url {link}")
-    except requests.exceptions.SSLError:
-        print(f"---> SSL certificate error for link: {link}")
-        bad_links.append((file, line, link))
-    except requests.exceptions.RequestException as err:
-        if "Max retries exceeded with url" in str(err):
-            print(f"Link connection failed, max retries reached: {link}")
-            bad_links.append((file, line, link))
-        else:
-            print(f"---> Connection error: {err}")
-            bad_links.append((file, line, link))
-    except Exception as err:
-        print(f"---> Unexpected exception occurred while making request: {err}")
+    if "github.com" in link:
+        token = "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"
+        headers = {'Authorization': 'token ' + token}
+        link="https://api.github.com/repos/TechWiz-3/TechWiz-3"
+        with session.get(link, headers=headers, verify=True) as repsonse:
+            print(response.status_code)
+            print(response)
     else:
-        if response == 403:
-            print(f"--> Link validity unkwown with 403 Forbidden return code")
-            warning_links.append((file, line, link))
-        elif response == 406:
-            print(f"--> Link validity unkwown with 406 Not Acceptable return code")
-            warning_links.append((file, line, link))
-        elif 561 >= response >= 400:
-            print(f"----> Error with status code {response}")
+        try:
+            with session.get(link) as response:
+                print(f"Status code {response.status_code} for url {link}")
+        except requests.exceptions.SSLError:
+            print(f"---> SSL certificate error for link: {link}")
             bad_links.append((file, line, link))
-        elif response >= 300:  # between 300-400 HTTP REDIRECT
-            print(f"--> Link redirecting with status code {response}")
-            warning_links.append((file, line, link))
-        elif response < 400:
-            print(f"Link valid with status code {response}")
-        elif response == 999:
-            print("--> Linkedin specific return code 999")
-            warning_links.append((file, line, link))
+        except requests.exceptions.RequestException as err:
+            if "Max retries exceeded with url" in str(err):
+                print(f"Link connection failed, max retries reached: {link}")
+                bad_links.append((file, line, link))
+            else:
+                print(f"---> Connection error: {err}")
+                bad_links.append((file, line, link))
+        except Exception as err:
+            print(f"---> Unexpected exception occurred while making request: {err}")
         else:
-            print(f"--> Unknown return code {response}")
-            warning_links.append((file, line, link))
+            if response == 403:
+                print(f"--> Link validity unkwown with 403 Forbidden return code")
+                warning_links.append((file, line, link))
+            elif response == 406:
+                print(f"--> Link validity unkwown with 406 Not Acceptable return code")
+                warning_links.append((file, line, link))
+            elif 561 >= response >= 400:
+                print(f"----> Error with status code {response}")
+                bad_links.append((file, line, link))
+            elif response >= 300:  # between 300-400 HTTP REDIRECT
+                print(f"--> Link redirecting with status code {response}")
+                warning_links.append((file, line, link))
+            elif response < 400:
+                print(f"Link valid with status code {response}")
+            elif response == 999:
+                print("--> Linkedin specific return code 999")
+                warning_links.append((file, line, link))
+            else:
+                print(f"--> Unknown return code {response}")
+                warning_links.append((file, line, link))
 
 def all_sites(sites):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
         executor.map(scan_link, sites)
 
 def scan_links(links, verbose=False):
