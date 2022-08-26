@@ -41,6 +41,7 @@ Please note, with repos with a lot of links, a scan can take a LONG time, even u
 - [ ] Enforce HTTPS option
 - [ ] Allow bad SSL cert option
 - [ ] Possible repo replacements, aliases or moves if a gh repo link fails
+- [ ] 429 error code
 
 ---
 ### 🎉 Commit labels
