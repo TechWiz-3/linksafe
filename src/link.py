@@ -30,57 +30,49 @@ def scan_link(url):
             for match in matches:
                 linky=f"https://api.github.com/repos/{match.group(1)}/{match.group(2)}"
                 print(f"{match.group()} --> converted to vvvv\n{linky}")
-           #    with session.get(link, headers=headers) as repsonse:
-            #        print(f"{response.status_code} for github link: {link}")
+                with session.get(link, headers=headers) as response:
+                    print("ayo")
+                    print(f"{response.status_code} for github link: {linky}")
+        else:
+            try:
+                with session.get(link) as response:
+                    print(f"Status code {response.status_code} for url {link}")
+            except requests.exceptions.SSLError:
+                print(f"---> SSL certificate error for link: {link}")
+                bad_links.append((file, line, link))
+            except requests.exceptions.RequestException as err:
+                if "Max retries exceeded with url" in str(err):
+                    print(f"Link connection failed, max retries reached: {link}")
+                    bad_links.append((file, line, link))
+                else:
+                    print(f"---> Connection error: {err}")
+                    bad_links.append((file, line, link))
+            except Exception as err:
+                print(f"---> Unexpected exception occurred while making request: {err}")
+            else:
+                response = response.status_code
+                if response == 403:
+                    print(f"--> Link validity unkwown with 403 Forbidden return code")
+                    warning_links.append((file, line, link))
+                elif response == 406:
+                    print(f"--> Link validity unkwown with 406 Not Acceptable return code")
+                    warning_links.append((file, line, link))
+                elif 561 >= response >= 400:
+                    print(f"----> Error with status code {response}")
+                    bad_links.append((file, line, link))
+                elif response >= 300:  # between 300-400 HTTP REDIRECT
+                    print(f"--> Link redirecting with status code {response}")
+                    warning_links.append((file, line, link))
+                elif response < 400:
+                    print(f"Link valid with status code {response}")
+                elif response == 999:
+                    print("--> Linkedin specific return code 999")
+                    warning_links.append((file, line, link))
+                else:
+                    print(f"--> Unknown return code {response}")
+                    warning_links.append((file, line, link))
     except Exception as e:
         print(e)
-
-
-#   if "github.com" in matches.group():
-#        print("yes")
-#        for recog_match in matches:
-#            print("pattern found")
-#            link=f"https://api.github.com/repos/{recog_match.group(1)}/{recog_match.group(2)}"
-#            headers = {'Authorization': 'token ' + TOKEN}
-#            with session.get(link, headers=headers) as repsonse:
-#                print(response.status_code)
-    else:
-        try:
-            with session.get(link) as response:
-                print(f"Status code {response.status_code} for url {link}")
-        except requests.exceptions.SSLError:
-            print(f"---> SSL certificate error for link: {link}")
-            bad_links.append((file, line, link))
-        except requests.exceptions.RequestException as err:
-            if "Max retries exceeded with url" in str(err):
-                print(f"Link connection failed, max retries reached: {link}")
-                bad_links.append((file, line, link))
-            else:
-                print(f"---> Connection error: {err}")
-                bad_links.append((file, line, link))
-        except Exception as err:
-            print(f"---> Unexpected exception occurred while making request: {err}")
-        else:
-            if response == 403:
-                print(f"--> Link validity unkwown with 403 Forbidden return code")
-                warning_links.append((file, line, link))
-            elif response == 406:
-                print(f"--> Link validity unkwown with 406 Not Acceptable return code")
-                warning_links.append((file, line, link))
-            elif 561 >= response >= 400:
-                print(f"----> Error with status code {response}")
-                bad_links.append((file, line, link))
-            elif response >= 300:  # between 300-400 HTTP REDIRECT
-                print(f"--> Link redirecting with status code {response}")
-                warning_links.append((file, line, link))
-            elif response < 400:
-                print(f"Link valid with status code {response}")
-            elif response == 999:
-                print("--> Linkedin specific return code 999")
-                warning_links.append((file, line, link))
-            else:
-                print(f"--> Unknown return code {response}")
-                warning_links.append((file, line, link))
 
 def all_sites(sites):
     with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
