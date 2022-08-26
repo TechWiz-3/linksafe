@@ -12,3 +12,5 @@ jobs:
         with:
           dirs: "./test,./src/"
           verbose: true
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
