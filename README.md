@@ -1,6 +1,8 @@
 # Linksafe
 
-Scan your repo for broken links. Whitelist links or files you wish to ignore. Works in private repos.
+Scan your repo for broken links. Whitelist links or files you wish to ignore. Works in private repos.  
+
+Check out the [fast](https://github.com/TechWiz-3/linksafe/tree/fast) branch for lightning fast checking for large volumes very short run time.
 
 ## Example usage
 ```yaml
