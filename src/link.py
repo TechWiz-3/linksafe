@@ -4,12 +4,14 @@ from sys import exit
 import concurrent.futures
 import threading
 from os import getenv
+import re
 
 TOKEN = getenv("TOKEN")
 
 bad_links = []
 warning_links = []
 thread_local = threading.local()
+pattern = re.compile("/^https:\/\/github.com\/([1-9A-Za-z-]*)\/([1-9A-Za-z-]*)\b")
 
 def get_session():
     if not hasattr(thread_local, "session"):
@@ -20,11 +22,15 @@ def get_session():
 def scan_link(url):
     file,line,link = url
     session = get_session()
-    if "github.com" in link:
-        headers = {'Authorization': 'token ' + TOKEN}
-        link="https://api.github.com/repos/TechWiz-3/TechWiz-3"
-        with session.get(link, headers=headers) as repsonse:
-            print(response.status_code)
+    matches = re.finditer(pattern, link)
+    if "github.com" in matches.group():
+        print("yes")
+        for recog_match in matches:
+            print("pattern found")
+            link=f"https://api.github.com/repos/{recog_match.group(1)}/{recog_match.group(2)}"
+            headers = {'Authorization': 'token ' + TOKEN}
+            with session.get(link, headers=headers) as repsonse:
+                print(response.status_code)
     else:
         try:
             with session.get(link) as response:
@@ -69,6 +75,24 @@ def all_sites(sites):
 
 def scan_links(links, verbose=False):
     all_sites(links)
+    pattern = re.compile("^https:\/\/github.com\/([1-9A-Za-z-]+)\/([1-9A-Za-z-]+)\b")
+    #pattern = re.compile("/^https:\/\/github.com\/([1-9A-Za-z-]*)\/([1-9A-Za-z-]*)\b")
+    pattern = re.compile(
+        "^https:\/\/github.com\/([1-9A-Za-z-]*)\/([1-9A-Za-z-]*[^\/]$)"
+)
+    pattern = re.compile(
+        "^https:\/\/github.com\/([1-9A-Za-z-_.]+)\/([1-9A-Za-z-_.#]+[^\/]$)"
+)
+    pattern = re.compile(
+        "^https:\/\/github.com\/([1-9A-Za-z-_.]+)\/([1-9A-Za-z-_.#]+([^\/]|\b$))"
+)
+    for file, line, link in links:
+        if "github.com" in link:
+            #print("link: ", link)
+            pass
+        matches = re.finditer(pattern, link)
+        for match in matches:
+            print("match:", match.group())
     if bad_links:
         print("Test failed")
         if warning_links:
