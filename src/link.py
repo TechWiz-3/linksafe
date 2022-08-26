@@ -3,16 +3,14 @@ from requests.adapters import HTTPAdapter
 from sys import exit
 import concurrent.futures
 import threading
-from os import getenv
+from os import environ
 import re
-
-TOKEN = getenv("TOKEN")
 
 bad_links = []
 warning_links = []
 thread_local = threading.local()
-pattern = re.compile("/^https:\/\/github.com\/([1-9A-Za-z-]*)\/([1-9A-Za-z-]*)\b")
 
+TOKEN = environ["TOKEN"]
 def get_session():
     if not hasattr(thread_local, "session"):
         thread_local.session = requests.Session()
@@ -20,17 +18,32 @@ def get_session():
 
 
 def scan_link(url):
-    file,line,link = url
-    session = get_session()
-    matches = re.finditer(pattern, link)
-    if "github.com" in matches.group():
-        print("yes")
-        for recog_match in matches:
-            print("pattern found")
-            link=f"https://api.github.com/repos/{recog_match.group(1)}/{recog_match.group(2)}"
-            headers = {'Authorization': 'token ' + TOKEN}
-            with session.get(link, headers=headers) as repsonse:
-                print(response.status_code)
+    pattern = re.compile(
+            "^https:\/\/github.com\/([1-9A-Za-z-_.]+)\/([1-9A-Za-z-_.#]+([^\/]|\b$))"
+    )
+    try:
+        file,line,link = url
+        session = get_session()
+        headers = {'Authorization': 'token ' + TOKEN}
+        if "github.com" in link:
+            matches = re.finditer(pattern, link)
+            for match in matches:
+                linky=f"https://api.github.com/repos/{match.group(1)}/{match.group(2)}"
+                print(f"{match.group()} --> converted to vvvv\n{linky}")
+           #    with session.get(link, headers=headers) as repsonse:
+            #        print(f"{response.status_code} for github link: {link}")
+    except Exception as e:
+        print(e)
+
+
+#   if "github.com" in matches.group():
+#        print("yes")
+#        for recog_match in matches:
+#            print("pattern found")
+#            link=f"https://api.github.com/repos/{recog_match.group(1)}/{recog_match.group(2)}"
+#            headers = {'Authorization': 'token ' + TOKEN}
+#            with session.get(link, headers=headers) as repsonse:
+#                print(response.status_code)
     else:
         try:
             with session.get(link) as response:
@@ -75,24 +88,6 @@ def all_sites(sites):
 
 def scan_links(links, verbose=False):
     all_sites(links)
-    pattern = re.compile("^https:\/\/github.com\/([1-9A-Za-z-]+)\/([1-9A-Za-z-]+)\b")
-    #pattern = re.compile("/^https:\/\/github.com\/([1-9A-Za-z-]*)\/([1-9A-Za-z-]*)\b")
-    pattern = re.compile(
-        "^https:\/\/github.com\/([1-9A-Za-z-]*)\/([1-9A-Za-z-]*[^\/]$)"
-)
-    pattern = re.compile(
-        "^https:\/\/github.com\/([1-9A-Za-z-_.]+)\/([1-9A-Za-z-_.#]+[^\/]$)"
-)
-    pattern = re.compile(
-        "^https:\/\/github.com\/([1-9A-Za-z-_.]+)\/([1-9A-Za-z-_.#]+([^\/]|\b$))"
-)
-    for file, line, link in links:
-        if "github.com" in link:
-            #print("link: ", link)
-            pass
-        matches = re.finditer(pattern, link)
-        for match in matches:
-            print("match:", match.group())
     if bad_links:
         print("Test failed")
         if warning_links:
