@@ -1,16 +1,16 @@
 import requests
-from requests.adapters import HTTPAdapter
-from sys import exit
-import concurrent.futures
-import threading
-from os import environ
 import re
+import threading
+import concurrent.futures
+from sys import exit
+from os import environ
+
+TOKEN = environ["TOKEN"]
 
 bad_links = []
 warning_links = []
 thread_local = threading.local()
 
-TOKEN = environ["TOKEN"]
 def get_session():
     if not hasattr(thread_local, "session"):
         thread_local.session = requests.Session()
@@ -76,9 +76,11 @@ def scan_link(url):
     except Exception as e:
         print(e)
 
+
 def all_sites(sites):
     with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
         executor.map(scan_link, sites)
+
 
 def scan_links(links, verbose=False):
     all_sites(links)
