@@ -1,6 +1,10 @@
 # Linksafe
 
-Scan your repo for broken links. Whitelist links or files you wish to ignore. Works in private repos.
+## Fast Branch
+
+Scan your repo for broken links. Whitelist links or files you wish to ignore. Works in private repos.  
+
+Useful for applications where very fast scanning is required. The fast branch uses concurrency, turning link scans that take hours into mere seconds.  
 
 ## Example usage
 ```yaml
@@ -13,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run linksafe
-        uses: TechWiz-3/linksafe@main
+        uses: TechWiz-3/linksafe@fast
         with: # comma seperated lists
           # use relative paths, if no dirs specified root dir is scanned
           dirs: ".,./src,./src/data,./tests,./tests/pylint"
@@ -22,7 +26,23 @@ jobs:
           whitelist_links: "https://xyz.xyz"
           # use relative paths
           whitelist_files: "./doc/HACKING.md"
+        env:
+            TOKEN: ${{ secrets.TOKEN }}
 ```
+
+## Setup
+
+#### :key: Generate a github token (no extra perms required)
+How-to [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+
+#### :lock: Create a repo secret called `TOKEN`
+How-to [here](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository)
+
+#### :thumbsup: Enjoy lightning speed link checking
+
+### How
+
+To avoid github ratelimits from the huge volume of lightning fast requests, use of a github token is required if github repo links are used. The program uses regex to recognise github repo links and converts them to a github api endpoint `https://api.github.com/repos/user/repo`
 
 ## More info
 
