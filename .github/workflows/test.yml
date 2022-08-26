@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run the action
-        uses: TechWiz-3/linksafe@main
+        uses: TechWiz-3/linksafe@fast
         with:
           dirs: "./test,./src/"
           verbose: true
