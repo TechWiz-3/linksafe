@@ -14,5 +14,4 @@ jobs:
           verbose: true
       - name: check stuff
         shell: bash
-        run: |
-          docker ps
+        run: docker ps
