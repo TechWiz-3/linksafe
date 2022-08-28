@@ -1,6 +1,7 @@
 import requests
 from requests.adapters import HTTPAdapter
 from sys import exit
+import os
 
 def scan_links(links, verbose=False):
     bad_links = []
