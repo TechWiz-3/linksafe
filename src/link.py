@@ -60,7 +60,7 @@ def scan_links(links, verbose=False):
         for file, line, link in bad_links:
             print(f"In {file} on line {line}, link: {link}")
             bad_link_count += 1
-            os.environ['GITHUB_STEP_SUMMARY'] = """# :link: Summary
+        os.environ['GITHUB_STEP_SUMMARY'] = """# :link: Summary
 :white_check_mark: Good links: {good_link_count}
 :warning: Warning links: {warn_link_count}\n:no_entry_sign: Bad links: {bad_link_count}"""
         exit(1)
