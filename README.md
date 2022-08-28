@@ -34,7 +34,7 @@ Each directory to be scanned must be specified directly, otherwise only the root
 
 Files and or links can be whitelisted i.e. ignored.  
 
-Please note, with repos with a lot of links, a scan can take a LONG time, even up to 40+ minutes.
+Please note, with repos with a lot of links, a scan can take a LONG time, even up to 40+ minutes. If you wish scans to be no longer than a minute or two, use the [fast](https://github.com/TechWiz-3/linksafe/tree/fast) branch.  
 
 ## Todo
 - [ ] In depth error handling for user inputs (if they go wrong)
