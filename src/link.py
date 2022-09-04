@@ -8,6 +8,7 @@ def write_summary(payload):
         file.write(f"{payload}\n")
 
 def scan_links(links, verbose=False):
+    write_summary("# Summary")
     bad_links = []
     warning_links = []
     good_link_count = 0
@@ -65,9 +66,9 @@ def scan_links(links, verbose=False):
         for file, line, link in bad_links:
             print(f"In {file} on line {line}, link: {link}")
             bad_link_count += 1
-        write_summary(":white_check_mark: Good links: {good_link_count}")
-        write_summary(":warning: Warning links: {warn_link_count}")
-        write_summary(":no_entry_sign: Bad links: {bad_link_count}")
+        write_summary(f":white_check_mark: Good links: {good_link_count}")
+        write_summary(f":warning: Warning links: {warn_link_count}")
+        write_summary(f":no_entry_sign: Bad links: {bad_link_count}")
         os.environ['GITHUB_STEP_SUMMARY'] = """# :link: Summary
 :white_check_mark: Good links: {good_link_count}
 :warning: Warning links: {warn_link_count}\n:no_entry_sign: Bad links: {bad_link_count}"""
@@ -78,8 +79,8 @@ def scan_links(links, verbose=False):
             print(f"In {file} on line {line}, link: {link}")
         print("Links that you have verified are OK can be whitelisted in the workflow file")
         print("Otherwise, all links correct - test passed")
-        write_summary(":white_check_mark: Good links: {good_link_count}")
-        write_summary(":warning: Warning links: {warn_link_count}")
+        write_summary(f":white_check_mark: Good links: {good_link_count}")
+        write_summary(f":warning: Warning links: {warn_link_count}")
     else:
         print("All links correct - test passed")
-        write_summary(":white_check_mark: Good links: {good_link_count}")
+        write_summary(f":white_check_mark: Good links: {good_link_count}")
