@@ -32,6 +32,8 @@ runs:
     uses: actions/setup-python@v3
     with:
       python-version: "3.9"
+  - name: checkout repo
+    uses: actions/checkout@v3
   - name: Run action
     run: |
       python3 ${{ github.action_path }}/action.py
