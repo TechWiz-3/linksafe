@@ -26,7 +26,22 @@ inputs:
 #  link-status: # id of output
 #    description: 'Whether or not the check passed'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  #args:
-  #  - ${{ inputs.who-to-greet }}
+  using: 'composite'
+  steps:
+  - name: setup python
+    uses: actions/setup-python@v3
+    with:
+      python-version: "3.9"
+  - name: Run action
+    run: |
+      python3 ${{ github.action_path }}/action.py
+    env:
+      INPUT_DIRS: ${{ inputs.DIRS }}
+      INPUT_WHITELIST_LINKS: ${{ inputs.WHITELIST_LINKS }}
+      INPUT_WHITELIST_FILES: ${{ inputs.WHITELIST_FILES }}
+      INPUT_VERBOSE: ${{ inputs.VERBOSE }}
+    shell: bash
+  - name: Write summary
+    run: |
+      cat tmp.txt >> $GITHUB_STEP_SUMMARY
+    shell: bash

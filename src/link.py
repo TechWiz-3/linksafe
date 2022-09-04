@@ -3,6 +3,10 @@ from requests.adapters import HTTPAdapter
 from sys import exit
 import os
 
+def write_summary(payload):
+    with open("tmp.txt", "a") as file:
+        file.write(f"{payload}\n")
+
 def scan_links(links, verbose=False):
     bad_links = []
     warning_links = []
@@ -23,7 +27,8 @@ def scan_links(links, verbose=False):
             else:
                 print(f"---> Connection error: {err}")
                 bad_links.append((file, line, link))
-        except Exception as err: print(f"---> Unexpected exception occurred while making request: {err}")
+        except Exception as err:
+            print(f"---> Unexpected exception occurred while making request: {err}")
         else:
             if status == 403:
                 print(f"--> Link validity unkwown with 403 Forbidden return code")
@@ -54,12 +59,15 @@ def scan_links(links, verbose=False):
             print("\n==== Links with non-definitive status codes ====")
             for file, line, link in warning_links:
                 print(f"In {file} on line {line}, link: {link}")
-                warning_link_count +=1
+                warn_link_count +=1
             print("Links that you have verified are OK can be whitelisted in the workflow file")
         print("\n==== Failed links ====")
         for file, line, link in bad_links:
             print(f"In {file} on line {line}, link: {link}")
             bad_link_count += 1
+        write_summary(":white_check_mark: Good links: {good_link_count}")
+        write_summary(":warning: Warning links: {warn_link_count}")
+        write_summary(":no_entry_sign: Bad links: {bad_link_count}")
         os.environ['GITHUB_STEP_SUMMARY'] = """# :link: Summary
 :white_check_mark: Good links: {good_link_count}
 :warning: Warning links: {warn_link_count}\n:no_entry_sign: Bad links: {bad_link_count}"""
@@ -70,5 +78,8 @@ def scan_links(links, verbose=False):
             print(f"In {file} on line {line}, link: {link}")
         print("Links that you have verified are OK can be whitelisted in the workflow file")
         print("Otherwise, all links correct - test passed")
+        write_summary(":white_check_mark: Good links: {good_link_count}")
+        write_summary(":warning: Warning links: {warn_link_count}")
     else:
         print("All links correct - test passed")
+        write_summary(":white_check_mark: Good links: {good_link_count}")
