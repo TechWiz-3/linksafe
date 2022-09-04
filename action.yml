@@ -36,7 +36,7 @@ runs:
     uses: actions/checkout@v3
   - name: Run action
     run: |
-      python3 ${{ github.action_path }}/action.py
+      python3 ${{ github.action_path }}/src/scan_file.py
     env:
       INPUT_DIRS: ${{ inputs.DIRS }}
       INPUT_WHITELIST_LINKS: ${{ inputs.WHITELIST_LINKS }}
