@@ -47,6 +47,7 @@ runs:
       INPUT_VERBOSE: ${{ inputs.VERBOSE }}
     shell: bash
   - name: Write summary
+    if: always()
     run: |
       cat tmp.txt >> $GITHUB_STEP_SUMMARY
     shell: bash
