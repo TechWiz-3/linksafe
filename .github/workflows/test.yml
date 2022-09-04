@@ -12,3 +12,6 @@ jobs:
         with:
           dirs: "./test,./src/"
           verbose: true
+      - name: check stuff
+        shell: bash
+        run: docker ps
