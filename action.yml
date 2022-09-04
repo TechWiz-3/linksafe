@@ -32,6 +32,9 @@ runs:
     uses: actions/setup-python@v3
     with:
       python-version: "3.9"
+  - name: install dependencies
+    run: pip install requests
+    shell: bash
   - name: checkout repo
     uses: actions/checkout@v3
   - name: Run action
