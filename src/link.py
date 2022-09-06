@@ -8,7 +8,7 @@ def write_summary(payload):
         file.write(f"{payload}\n")
 
 def scan_links(links, verbose=False):
-    write_summary("# Summary")
+    write_summary("# :link: Summary")
     bad_links = []
     warning_links = []
     good_link_count = 0
