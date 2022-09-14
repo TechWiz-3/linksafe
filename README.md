@@ -1,8 +1,10 @@
 # Linksafe
 
+## 🕴️ Clean Branch
+
 Scan your repo for broken links. Whitelist links or files you wish to ignore. Works in private repos. Designed to be ideal for awesome-lists!  
 
-This branch is like main, except it's logs are cleaner as it runs without creating an action summary.  
+This branch is like main, except it's logs are cleaner as it runs without creating an action summary. You can see that quite clearly in the logs [here](./media/clean_example.png)  
 
 ## Example usage
 ```yaml
