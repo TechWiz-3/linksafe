@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import re
 from link import scan_links
-from os import getenv
 import os
 from sys import argv
+from sys import exit
 
 args = argv
-if "--local-test" in args:
+if "--local-test" in args:  # for local testing
    # directories = ["./", "./pythonfetch", "./bfetch/", "./kids.cache/", "awesome-python"]
     directories = ["./awesome-python"]
     verbose = True
@@ -14,10 +14,10 @@ if "--local-test" in args:
     whitelist_files=["./LICENSE.md"]
 else:
     try:
-        verbose = getenv("INPUT_VERBOSE")
-        whitelist_links = getenv("INPUT_WHITELIST_LINKS").split(",")
-        whitelist_files = getenv("INPUT_WHITELIST_FILES").split(",")
-        directories = getenv("INPUT_DIRS").split(",")
+        verbose = os.getenv("INPUT_VERBOSE")
+        whitelist_links = os.getenv("INPUT_WHITELIST_LINKS").split(",")
+        whitelist_files = os.getenv("INPUT_WHITELIST_FILES").split(",")
+        directories = os.getenv("INPUT_DIRS").split(",")
         if verbose == "false":
             verbose = False
             print("Verbose is disabled")
@@ -26,13 +26,12 @@ else:
             print("Verbose is enabled")
     except:
         print("Error loading env variables, please check your .github/workflows workflow")
-        from sys import exit
         exit(1)
 
 
 pattern = re.compile(r"(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])")
 links = []
-default_link_exclusion = ["https://example.com", "http://example.com/", "http://localhost"]
+default_link_exclusion = ["https://example.com", "http://example.com", "http://localhost", "http://localhost"]
 
 # loop through the directories, e.g. [".", "./src", "./doc"]
 for directory in directories:
