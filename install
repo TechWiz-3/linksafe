@@ -10,7 +10,10 @@ touch .github/workflows/linkcheck.yml
 
 cat << END >> .github/workflows/linkcheck.yml
 name: Link-check
-on: [push]
+on:
+  schedule:
+    - cron: '0 1 * * *'  # 1 am everyday
+  push:
 
 jobs:
   build:
