@@ -1,10 +1,17 @@
 import requests
 from requests.adapters import HTTPAdapter
 from sys import exit
+import os
+
+def write_summary(payload):
+    with open("tmp.txt", "a") as file:
+        file.write(f"{payload}\n")
 
 def scan_links(links, verbose=False):
+    write_summary("# :link: Summary")
     bad_links = []
     warning_links = []
+    good_link_count = 0
     for file, line, link in links:
         try:
             s = requests.Session()
@@ -38,22 +45,30 @@ def scan_links(links, verbose=False):
                 warning_links.append((file, line, link))
             elif status < 400:
                 print(f"Link valid with status code {status}")
+                good_link_count += 1
             elif status == 999:
                 print("--> Linkedin specific return code 999")
                 warning_links.append((file, line, link))
             else:
                 print(f"--> Unknown return code {status}")
                 warning_links.append((file, line, link))
+    bad_link_count = 0
+    warn_link_count = 0
     if bad_links:
         print("Test failed")
         if warning_links:
             print("\n==== Links with non-definitive status codes ====")
             for file, line, link in warning_links:
                 print(f"In {file} on line {line}, link: {link}")
+                warn_link_count +=1
             print("Links that you have verified are OK can be whitelisted in the workflow file")
         print("\n==== Failed links ====")
         for file, line, link in bad_links:
             print(f"In {file} on line {line}, link: {link}")
+            bad_link_count += 1
+        write_summary(f":white_check_mark: Good links: {good_link_count}")
+        write_summary(f":warning: Warning links: {warn_link_count}")
+        write_summary(f":no_entry_sign: Bad links: {bad_link_count}")
         exit(1)
     elif warning_links:
         print("\n==== Links with non-definitive status codes ====")
@@ -61,5 +76,12 @@ def scan_links(links, verbose=False):
             print(f"In {file} on line {line}, link: {link}")
         print("Links that you have verified are OK can be whitelisted in the workflow file")
         print("Otherwise, all links correct - test passed")
+        write_summary(f":white_check_mark: Good links: {good_link_count}")
+        write_summary(f":warning: Warning links: {warn_link_count}")
+        write_summary(f":no_entry_sign: Bad links: {bad_link_count}")
     else:
         print("All links correct - test passed")
+        write_summary(f":white_check_mark: Good links: {good_link_count}")
+        write_summary(f":warning: Warning links: {warn_link_count}")
+        write_summary(f":no_entry_sign: Bad links: {bad_link_count}")
+        exit(0)
