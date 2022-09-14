@@ -52,8 +52,6 @@ Each directory to be scanned must be specified directly, otherwise only the root
 
 Files and or links can be whitelisted i.e. ignored.  
 
-Please note, with repos with a lot of links, a scan can take a LONG time, even up to 40+ minutes.
-
 ## Todo
 - [ ] In depth error handling for user inputs (if they go wrong)
 - [ ] Recognition of remove yt videos
