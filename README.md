@@ -2,7 +2,7 @@
 
 Scan your repo for broken links. Whitelist links or files you wish to ignore. Works in private repos. Designed to be ideal for awesome-lists!  
 
-:zap: Check out the [fast](https://github.com/TechWiz-3/linksafe/tree/fast) branch if you want lightning fast checking for large volumes and very short run time.
+This branch is like main, except it's logs are cleaner as it runs without creating an action summary.  
 
 ## Example usage
 ```yaml
