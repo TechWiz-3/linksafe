@@ -69,9 +69,6 @@ def scan_links(links, verbose=False):
         write_summary(f":white_check_mark: Good links: {good_link_count}")
         write_summary(f":warning: Warning links: {warn_link_count}")
         write_summary(f":no_entry_sign: Bad links: {bad_link_count}")
-        os.environ['GITHUB_STEP_SUMMARY'] = """# :link: Summary
-:white_check_mark: Good links: {good_link_count}
-:warning: Warning links: {warn_link_count}\n:no_entry_sign: Bad links: {bad_link_count}"""
         exit(1)
     elif warning_links:
         print("\n==== Links with non-definitive status codes ====")
@@ -81,6 +78,10 @@ def scan_links(links, verbose=False):
         print("Otherwise, all links correct - test passed")
         write_summary(f":white_check_mark: Good links: {good_link_count}")
         write_summary(f":warning: Warning links: {warn_link_count}")
+        write_summary(f":no_entry_sign: Bad links: {bad_link_count}")
     else:
         print("All links correct - test passed")
         write_summary(f":white_check_mark: Good links: {good_link_count}")
+        write_summary(f":warning: Warning links: {warn_link_count}")
+        write_summary(f":no_entry_sign: Bad links: {bad_link_count}")
+        exit(0)
