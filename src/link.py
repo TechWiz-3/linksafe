@@ -23,6 +23,7 @@ def get_session():
 
 
 def scan_link(url):
+    global good_link_count
     pattern = re.compile(
             "^https:\/\/github.com\/([1-9A-Za-z-_.]+)\/([1-9A-Za-z-_.#]+([^\/]|\b$))"
     )
@@ -92,7 +93,7 @@ def scan_links(links, verbose=False):
     all_sites(links)
     write_summary("# :link: Summary")
     write_summary(f":white_check_mark: Good links: {good_link_count}")
-    write_summary(f":warning: Warning links: {len(warn_links)}")
+    write_summary(f":warning: Warning links: {len(warning_links)}")
     write_summary(f":no_entry_sign: Bad links: {len(bad_links)}")
     if bad_links:
         print("Test failed")
