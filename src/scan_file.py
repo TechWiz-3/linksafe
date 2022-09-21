@@ -8,22 +8,32 @@ from sys import exit
 args = argv
 if "--local-test" in args:  # for local testing
    # directories = ["./", "./pythonfetch", "./bfetch/", "./kids.cache/", "awesome-python"]
-    directories = ["./awesome-python"]
+    directories = '.'
+#    directories = ["awesome-python"]
     verbose = True
     whitelist_links = ["https://img.shields.io/badge/style-black-black", "http://github.com/0k/%%name%%"]
-    whitelist_files=["./LICENSE.md"]
+    whitelist_files=["LICENSE.md", "README.md"]
+    for i, file in enumerate(whitelist_files):
+        if not file.startswith("./"):
+            whitelist_files[i] = f"./{file}"
+            print(f"File '{file}' has been converted to relative filepath '{whitelist_files[i]}'")
+
 else:
     try:
         verbose = os.getenv("INPUT_VERBOSE")
         whitelist_links = os.getenv("INPUT_WHITELIST_LINKS").split(",")
         whitelist_files = os.getenv("INPUT_WHITELIST_FILES").split(",")
-        directories = os.getenv("INPUT_DIRS").split(",")
+        directories = os.getenv("INPUT_DIRS").split(",")  # defaults to '.' from the action.yml
         if verbose == "false":
             verbose = False
             print("Verbose is disabled")
         elif verbose == "true":
             verbose = True
             print("Verbose is enabled")
+        for i, file in enumerate(whitelist_files):
+            if not file.startswith("./"):
+                whitelist_files[i] = f"./{file}"
+                print(f"File '{file}' has been converted to relative filepath '{whitelist_files[i]}'")
     except:
         print("Error loading env variables, please check your .github/workflows workflow")
         exit(1)
@@ -35,9 +45,18 @@ default_link_exclusion = ["https://example.com", "http://example.com", "http://l
 
 # loop through the directories, e.g. [".", "./src", "./doc"]
 for directory in directories:
-    for file_object in os.scandir(directory):
+    if directory != "." and not directory.startswith("./"):
+        old_directory = directory
+        directory = f"./{directory}"
+        print(f"Directory '{old_directory}' converted to relative filepath '{directory}'")
+    try:
+        scan = os.scandir(directory)
+    except FileNotFoundError:
+        print(f"Directory '{directory}' not found, please check the file path (only use relative paths) and spelling")
+        exit(78)
+    for file_object in scan:
         file = file_object.path
-        if file_object.is_file() and not file.startswith("./."):
+        if file_object.is_file() and not file.startswith("./."):  # filter out dirs like .git
             if file in whitelist_files:
                 print(f"{file} skipped due to whitelist")
                 # skip the file
@@ -50,7 +69,8 @@ for directory in directories:
                     try:
                         re_match = match.group()
                         if verbose:
-                            print(f"Link found on line {i+1}: {re_match}")
+                            pass
+    #                        print(f"Link found on line {i+1}: {re_match}")
                     except Exception as e:
                         print(e)
                     else:
@@ -69,7 +89,8 @@ for directory in directories:
                         else:  # if link is not whitelisted or ignored
                             links.append((file, i+1, re_match))
                             if verbose == True:
-                                print('Link added for scanning %s' % (match.group()))
+  #                              print('Link added for scanning %s' % (match.group()))
+                                pass
 
 print("\n\nLink check starting:\n")
 try:
