@@ -11,5 +11,5 @@ jobs:
         uses: TechWiz-3/linksafe@main
         with:
           dirs: ".,./test,./src/"
-          whitelist_files: "./test.txt"
+          whitelist_files: "test.txt"
           verbose: true
