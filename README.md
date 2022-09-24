@@ -1,10 +1,11 @@
 # Linksafe
 
-## Fast Branch
+##🕴️ ⚡Clean Fast Branch
 
 Scan your repo for broken links. Whitelist links or files you wish to ignore. Works in private repos.  
 
-Useful for applications where very fast scanning is required. The fast branch uses concurrency, turning link scans that take hours into mere seconds.  
+This branch is like [fast](https://github.com/TechWiz-3/linksafe/tree/fast), except it's logs are cleaner as it runs without creating an action summary.
+
 
 ## Example usage
 ```yaml
