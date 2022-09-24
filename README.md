@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run linksafe
-        uses: TechWiz-3/linksafe@fast
+        uses: TechWiz-3/linksafe@clean-fast
         with: # comma seperated lists
           # use relative paths, if no dirs specified root dir is scanned
           dirs: ".,./src,./src/data,./tests,./tests/pylint"
