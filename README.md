@@ -1,6 +1,6 @@
 # Linksafe
 
-## Fast Branch
+## ⚡Fast Branch
 
 Scan your repo for broken links. Whitelist links or files you wish to ignore. Works in private repos.  
 

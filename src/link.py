@@ -9,7 +9,12 @@ TOKEN = environ["TOKEN"]
 
 bad_links = []
 warning_links = []
+good_link_count = 0
 thread_local = threading.local()
+
+def write_summary(payload):
+    with open("tmp.txt", "a") as file:
+        file.write(f"{payload}\n")
 
 def get_session():
     if not hasattr(thread_local, "session"):
@@ -18,6 +23,7 @@ def get_session():
 
 
 def scan_link(url):
+    global good_link_count
     pattern = re.compile(
             "^https:\/\/github.com\/([1-9A-Za-z-_.]+)\/([1-9A-Za-z-_.#]+([^\/]|\b$))"
     )
@@ -67,6 +73,7 @@ def scan_link(url):
                 warning_links.append((file, line, link))
             elif response < 400:
                 print(f"Link valid with status code {response}")
+                good_link_count += 1
             elif response == 999:
                 print("--> Linkedin specific return code 999")
                 warning_links.append((file, line, link))
@@ -84,6 +91,10 @@ def all_sites(sites):
 
 def scan_links(links, verbose=False):
     all_sites(links)
+    write_summary("# :link: Summary")
+    write_summary(f":white_check_mark: Good links: {good_link_count}")
+    write_summary(f":warning: Warning links: {len(warning_links)}")
+    write_summary(f":no_entry_sign: Bad links: {len(bad_links)}")
     if bad_links:
         print("Test failed")
         if warning_links:

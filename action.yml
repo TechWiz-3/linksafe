@@ -26,7 +26,28 @@ inputs:
 #  link-status: # id of output
 #    description: 'Whether or not the check passed'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  #args:
-  #  - ${{ inputs.who-to-greet }}
+  using: 'composite'
+  steps:
+  - name: setup python
+    uses: actions/setup-python@v3
+    with:
+      python-version: "3.9"
+  - name: install dependencies
+    run: pip install requests
+    shell: bash
+  - name: checkout repo
+    uses: actions/checkout@v3
+  - name: Run action
+    run: |
+      python3 ${{ github.action_path }}/src/scan_file.py
+    env:
+      INPUT_DIRS: ${{ inputs.DIRS }}
+      INPUT_WHITELIST_LINKS: ${{ inputs.WHITELIST_LINKS }}
+      INPUT_WHITELIST_FILES: ${{ inputs.WHITELIST_FILES }}
+      INPUT_VERBOSE: ${{ inputs.VERBOSE }}
+    shell: bash
+  - name: Write summary
+    if: always()
+    run: |
+      cat tmp.txt >> $GITHUB_STEP_SUMMARY
+    shell: bash
