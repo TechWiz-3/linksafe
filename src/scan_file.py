@@ -64,33 +64,37 @@ for directory in directories:
             if verbose:
                 print(f"Scanning {file} file")
             # scan file
-            for i, line in enumerate(open(file)):
-                for match in re.finditer(pattern, line):
-                    try:
-                        re_match = match.group()
-                        if verbose:
-                            pass
-    #                        print(f"Link found on line {i+1}: {re_match}")
-                    except Exception as e:
-                        print(e)
-                    else:
-                        ignore = False
-                        for ignore_link in default_link_exclusion:
-                            if ignore_link in re_match:
-                               print(f"Link ignored (automatically): {re_match}")
-                               ignore = True
-                               break
-                        if ignore:  # link should be automatically ignored
-                            continue  # skip to the next link
-                        for ignore_link in whitelist_links:
-                            if ignore_link in re_match:
-                                print(f"Link ignored (whitelist): {re_match}")
-                                break
-                        else:  # if link is not whitelisted or ignored
-                            links.append((file, i+1, re_match))
-                            if verbose == True:
-  #                              print('Link added for scanning %s' % (match.group()))
+            try:
+                for i, line in enumerate(open(file)):
+                    for match in re.finditer(pattern, line):
+                        try:
+                            re_match = match.group()
+                            if verbose:
                                 pass
+        #                        print(f"Link found on line {i+1}: {re_match}")
+                        except Exception as e:
+                            print(e)
+                        else:
+                            ignore = False
+                            for ignore_link in default_link_exclusion:
+                                if ignore_link in re_match:
+                                   print(f"Link ignored (automatically): {re_match}")
+                                   ignore = True
+                                   break
+                            if ignore:  # link should be automatically ignored
+                                continue  # skip to the next link
+                            for ignore_link in whitelist_links:
+                                if ignore_link in re_match:
+                                    print(f"Link ignored (whitelist): {re_match}")
+                                    break
+                            else:  # if link is not whitelisted or ignored
+                                links.append((file, i+1, re_match))
+                                if verbose == True:
+      #                              print('Link added for scanning %s' % (match.group()))
+                                    pass
+            except UnicodeDecodeError:  # if the file contents can't be read
+                print(f"'{file}' has been skipped as it is not readable!")
+                continue  # skip to next file
 
 print("\n\nLink check starting:\n")
 try:
