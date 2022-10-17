@@ -13,7 +13,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Run linksafe
         uses: TechWiz-3/linksafe@main
         with: # comma seperated lists
