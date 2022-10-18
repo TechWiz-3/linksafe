@@ -66,9 +66,9 @@ def scan_links(links, verbose=False):
         for file, line, link in bad_links:
             print(f"In {file} on line {line}, link: {link}")
             bad_link_count += 1
-        write_summary(f"Good links: {good_link_count}")
-        write_summary(f"Warning links: {warn_link_count}")
-        write_summary(f"Bad links: {bad_link_count}")
+        write_summary(f"Good links\: {good_link_count}")
+        write_summary(f"Warning links\: {warn_link_count}")
+        write_summary(f"Bad links\: {bad_link_count}")
         exit(1)
     elif warning_links:
         print("\n==== Links with non-definitive status codes ====")
