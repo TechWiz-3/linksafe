@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run the action
-        uses: TechWiz-3/linksafe@main
+        uses: TechWiz-3/linksafe@main-refactor
         with:
           dirs: ".,test,src/"
           whitelist_files: "test.txt"
