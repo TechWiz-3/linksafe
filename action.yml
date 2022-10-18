@@ -50,4 +50,5 @@ runs:
     if: always()
     run: |
       cat tmp.txt >> $GITHUB_STEP_SUMMARY
+      echo "{GITHUB_STEP_SUMMARY}=$(cat tmp.txt)" > $GITHUB_ENV
     shell: bash
