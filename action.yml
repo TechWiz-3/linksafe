@@ -1,5 +1,4 @@
 name: 'linksafe-action'
-
 branding:
     icon: 'check'
     color: 'purple'
@@ -50,5 +49,5 @@ runs:
     if: always()
     run: |
       summary="$(cat tmp.txt)"
-      echo "{GITHUB_STEP_SUMMARY}=$summary" > $GITHUB_ENV
+      echo "GITHUB_STEP_SUMMARY=$summary" > $GITHUB_ENV
     shell: bash
