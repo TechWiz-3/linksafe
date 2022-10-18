@@ -49,6 +49,6 @@ runs:
   - name: Write summary
     if: always()
     run: |
-      cat tmp.txt >> $GITHUB_STEP_SUMMARY
-      echo "{GITHUB_STEP_SUMMARY}=$(cat tmp.txt)" > $GITHUB_ENV
+      summary="$(cat tmp.txt)"
+      echo "{GITHUB_STEP_SUMMARY}=$summary" > $GITHUB_ENV
     shell: bash
