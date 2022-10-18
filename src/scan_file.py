@@ -12,7 +12,7 @@ if "--local-test" in args:  # for local testing
 #    directories = ["awesome-python"]
     verbose = True
     whitelist_links = ["https://img.shields.io/badge/style-black-black", "http://github.com/0k/%%name%%"]
-    whitelist_files=["LICENSE.md", "README.md"]
+    whitelist_files=["LICENSE.md"]
     for i, file in enumerate(whitelist_files):
         if not file.startswith("./"):
             whitelist_files[i] = f"./{file}"
@@ -43,6 +43,46 @@ pattern = re.compile(r"(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:
 links = []
 default_link_exclusion = ["https://example.com", "http://example.com", "http://localhost", "http://localhost"]
 
+
+def scan_file(file):
+    global pattern
+    global links
+    global default_link_exclusion
+    global verbose
+    global whitelist_links
+    try:
+        for i, line in enumerate(open(file)):
+            for match in re.finditer(pattern, line):
+                try:
+                    re_match = match.group()
+                    if verbose:
+   #                    pass
+                        print(f"Link found on line {i+1}: {re_match}")
+                except Exception as e:
+                    print(e)
+                else:
+                    ignore = False
+                    for ignore_link in default_link_exclusion:
+                        if ignore_link in re_match:
+                           print(f"Link ignored (automatically): {re_match}")
+                           ignore = True
+                           break
+                    if ignore:  # link should be automatically ignored
+                        continue  # skip to the next link
+                    for ignore_link in whitelist_links:
+                        if ignore_link in re_match:
+                            print(f"Link ignored (whitelist): {re_match}")
+                            break
+                    else:  # if link is not whitelisted or ignored
+                        links.append((file, i+1, re_match))
+                        if verbose == True:
+    #                              print('Link added for scanning %s' % (match.group()))
+                            pass
+    except UnicodeDecodeError:  # if the file contents can't be read
+        print(f"'{file}' has been skipped as it is not readable!")
+
+
+
 # loop through the directories, e.g. [".", "./src", "./doc"]
 for directory in directories:
     if directory != "." and not directory.startswith("./"):
@@ -64,37 +104,8 @@ for directory in directories:
             if verbose:
                 print(f"Scanning {file} file")
             # scan file
-            try:
-                for i, line in enumerate(open(file)):
-                    for match in re.finditer(pattern, line):
-                        try:
-                            re_match = match.group()
-                            if verbose:
-                                pass
-        #                        print(f"Link found on line {i+1}: {re_match}")
-                        except Exception as e:
-                            print(e)
-                        else:
-                            ignore = False
-                            for ignore_link in default_link_exclusion:
-                                if ignore_link in re_match:
-                                   print(f"Link ignored (automatically): {re_match}")
-                                   ignore = True
-                                   break
-                            if ignore:  # link should be automatically ignored
-                                continue  # skip to the next link
-                            for ignore_link in whitelist_links:
-                                if ignore_link in re_match:
-                                    print(f"Link ignored (whitelist): {re_match}")
-                                    break
-                            else:  # if link is not whitelisted or ignored
-                                links.append((file, i+1, re_match))
-                                if verbose == True:
-      #                              print('Link added for scanning %s' % (match.group()))
-                                    pass
-            except UnicodeDecodeError:  # if the file contents can't be read
-                print(f"'{file}' has been skipped as it is not readable!")
-                continue  # skip to next file
+            scan_file(file)
+
 
 print("\n\nLink check starting:\n")
 try:
