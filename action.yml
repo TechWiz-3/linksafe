@@ -49,6 +49,6 @@ runs:
     if: always()
     run: |
       summary="$(cat tmp.txt)"
-      echo "step_summary=far" >> $GITHUB_ENV
-      echo "GITHUB_STEP_SUMMARY=outbruh" >> $GITHUB_ENV
+      echo "github_step_summary=far" >> $GITHUB_ENV
+      echo "STEP_SUMMARY=outbruh" >> $GITHUB_ENV
     shell: bash
