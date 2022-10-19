@@ -1,4 +1,5 @@
 name: 'linksafe-action'
+
 branding:
     icon: 'check'
     color: 'purple'
@@ -16,10 +17,7 @@ inputs:
   whitelist_files:
     description: 'Files that will not be scanned'
     required: false
-  scan_only:
-    description: 'Specify a list of files to scan, files not in this list will be ignored'
-    required: false
-    default: ''
+    
   verbose:
     description: 'Whether output should be verbose or not'
     required: false
@@ -51,7 +49,5 @@ runs:
   - name: Write summary
     if: always()
     run: |
-      summary="$(cat tmp.txt)"
-      echo "github_step_summary=far" >> $GITHUB_ENV
-      echo "STEP_SUMMARY=outbruh" >> $GITHUB_ENV
+      cat tmp.txt >> $GITHUB_STEP_SUMMARY
     shell: bash
