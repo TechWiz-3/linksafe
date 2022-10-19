@@ -7,6 +7,9 @@ from sys import exit
 
 args = argv
 if "--local-test" in args:  # for local testing
+    scan_only = ''
+    if 'scan_only' in argv:
+        scan_only = ["./README.md", "./CONTRIBUTING.md"]
    # directories = ["./", "./pythonfetch", "./bfetch/", "./kids.cache/", "awesome-python"]
     directories = '.'
 #    directories = ["awesome-python"]
@@ -24,6 +27,7 @@ else:
         whitelist_links = os.getenv("INPUT_WHITELIST_LINKS").split(",")
         whitelist_files = os.getenv("INPUT_WHITELIST_FILES").split(",")
         directories = os.getenv("INPUT_DIRS").split(",")  # defaults to '.' from the action.yml
+        scan_only = os.getenv("INPUT_SCAN_ONLY").split(",")
         if verbose == "false":
             verbose = False
             print("Verbose is disabled")
@@ -34,6 +38,10 @@ else:
             if not file.startswith("./"):
                 whitelist_files[i] = f"./{file}"
                 print(f"File '{file}' has been converted to relative filepath '{whitelist_files[i]}'")
+        for i, file in enumerate(scan_only):
+            if not file.startswith("./"):
+                whitelist_files[i] = f"./{file}"
+                print(f"File '{file}' has been converted to relative filepath '{scan_only[i]}'")
     except:
         print("Error loading env variables, please check your .github/workflows workflow")
         exit(1)
@@ -41,7 +49,7 @@ else:
 
 pattern = re.compile(r"(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])")
 links = []
-default_link_exclusion = ["https://example.com", "http://example.com", "http://localhost", "http://localhost"]
+default_link_exclusion = ["https://example.com", "http://example.com", "https://localhost", "http://localhost"]
 
 
 def scan_file(file):
@@ -56,8 +64,8 @@ def scan_file(file):
                 try:
                     re_match = match.group()
                     if verbose:
-   #                    pass
-                        print(f"Link found on line {i+1}: {re_match}")
+                       pass
+                        # print(f"Link found on line {i+1}: {re_match}")
                 except Exception as e:
                     print(e)
                 else:
@@ -101,6 +109,15 @@ for directory in directories:
                 print(f"{file} skipped due to whitelist")
                 # skip the file
                 continue
+            if scan_only:
+                if file in scan_only:
+                    if verbose:
+                        print(f"SCAN ONLY: '{file}' added for scan")
+                    pass  # scan file
+                else:
+                    if verbose:
+                        print(f"SCAN ONLY: '{file}' not in list of files to scan")
+                    continue  # skip file
             if verbose:
                 print(f"Scanning {file} file")
             # scan file
