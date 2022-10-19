@@ -48,6 +48,7 @@ runs:
       INPUT_WHITELIST_LINKS: ${{ inputs.WHITELIST_LINKS }}
       INPUT_WHITELIST_FILES: ${{ inputs.WHITELIST_FILES }}
       INPUT_VERBOSE: ${{ inputs.VERBOSE }}
+      INPUT_SCAN_ONLY: ${{ inputs.SCAN_ONLY }}
     shell: bash
   - name: Write summary
     if: always()
