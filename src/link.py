@@ -7,8 +7,13 @@ def write_summary(payload):
     with open("tmp.txt", "a") as file:
         file.write(f"{payload}\n")
 
+def write_issue_file(payload):
+    with open("out.md", "a") as file:
+        file.write(f"{payload}\n")
+
 def scan_links(links, verbose=False):
     write_summary("# :link: Summary")
+    write_issue_file("# :link: Broken Links")
     bad_links = []
     warning_links = []
     good_link_count = 0
@@ -21,37 +26,48 @@ def scan_links(links, verbose=False):
         except requests.exceptions.SSLError:
             print(f"---> SSL certificate error for link: {link}")
             bad_links.append((file, line, link))
+            write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [SSL Cert Error]")
         except requests.exceptions.RequestException as err:
             if "Max retries exceeded with url" in str(err):
                 print(f"Link connection failed, max retries reached: {link}")
                 bad_links.append((file, line, link))
+                write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [Max Retries Reached]")
             else:
                 print(f"---> Connection error: {err}")
                 bad_links.append((file, line, link))
+            write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [Connection Error]")
         except Exception as err:
             print(f"---> Unexpected exception occurred while making request: {err}")
+            write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [Unknown error]")
         else:
             if status == 403:
                 print(f"--> Link validity unkwown with 403 Forbidden return code")
                 warning_links.append((file, line, link))
+                write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [403 Forbidden]")
             elif status == 406:
                 print(f"--> Link validity unkwown with 406 Not Acceptable return code")
                 warning_links.append((file, line, link))
+                write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [406 Not Acceptable]")
             elif 561 >= status >= 400:
                 print(f"----> Error with status code {status}")
                 bad_links.append((file, line, link))
+                write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [400 Bad Request]")
             elif status >= 300:  # between 300-400 HTTP REDIRECT
                 print(f"--> Link redirecting with status code {status}")
+                write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [{status}]")
                 warning_links.append((file, line, link))
             elif status < 400:
                 print(f"Link valid with status code {status}")
                 good_link_count += 1
+                write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [{status}]")
             elif status == 999:
                 print("--> Linkedin specific return code 999")
                 warning_links.append((file, line, link))
+                write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [999 LinkedIn]")
             else:
                 print(f"--> Unknown return code {status}")
                 warning_links.append((file, line, link))
+                write_issue_file(f"* `{file}` on line `{line}`: \"{link}\" [{status}]")
     bad_link_count = 0
     warn_link_count = 0
     if bad_links:
